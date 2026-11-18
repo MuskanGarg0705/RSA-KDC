@@ -1,0 +1,27 @@
+import hashlib
+p = 61
+q = 53
+n = p * q
+e = 17
+d = 2753
+message = "test"
+hash_value = hashlib.sha1(message.encode()).hexdigest()
+hash_int = int(hash_value, 16) % n
+signature = pow(hash_int, d, n)
+print("Original Message:", message)
+print("SHA-1 Hash:", hash_value)
+print("Digital Signature:", signature)
+verified_hash = pow(signature, e, n)
+if verified_hash == hash_int:
+    print("Signature Verification: VALID")
+else:
+    print("Signature Verification: INVALID")
+tampered_message = "hello"
+tampered_hash = int(
+    hashlib.sha1(tampered_message.encode()).hexdigest(), 16
+) % n
+print("\nTampered Message:", tampered_message)
+if verified_hash == tampered_hash:
+    print("Tampered Signature Verification: VALID")
+else:
+    print("Tampered Signature Verification: INVALID")
